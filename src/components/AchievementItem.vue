@@ -6,7 +6,8 @@
     <el-tooltip placement="top" effect="light">
         <template #content>
             <span class="title"><slot name="title"></slot></span>
-            <span class="cost"><slot name="cost"></slot></span>
+            <br/>
+            <span class="requirement"><slot name="requirement"></slot></span>
             <br/>
             <slot name="description"></slot>
             
@@ -22,13 +23,8 @@
   .title {
     font-size: 1rem;
   }
-  .cost {
-    float: right;
-    font-size: 1rem;
-  }
-
   .enabled .box-card {
-    background-color: white !important;
+    background-color: lightgreen !important;
   }
 
   .enabled .box-card:hover {

@@ -1,5 +1,6 @@
 export class Production {
     globalMultiplier = 1;
+    costMultiplier = 1;
     productionList = [];
 
     constructor(production) {
@@ -12,15 +13,20 @@ export class Production {
         production.productionList.forEach((item) => {
             this.productionList.push(new Item(0, 0, item))
         });
-        this.globalMultiplier = production.globalMultiplier;
+        this.globalMultiplier = production.globalMultiplier || 1;
+        this.costMultiplier = production.costMultiplier || 1;
     }
 
     getCost(i) {
-        return this.productionList[i].getCost(); 
+        return this.productionList[i].getCost() * this.costMultiplier; 
     }
 
     getBaseIncome(i) {
         return this.productionList[i].getBaseIncome() * this.globalMultiplier;
+    }
+
+    changeCostMultiplier(newMultiplier) {
+        this.productionList.forEach((item) => item.changeCostMultiplier(newMultiplier));
     }
 
     buyItem(i) {
@@ -41,6 +47,7 @@ export class Production {
 
 class Item {
     currentCost = 0;
+    baseCost = 0;
     baseIncome = 0;
     quantity = 0;
     costMultiplier = 1.1;
@@ -49,10 +56,12 @@ class Item {
     constructor(baseCost, income, item) {
         if (!item) {
             this.currentCost = baseCost;
+            this.baseCost = baseCost;
             this.baseIncome = income;
             return;
         }
         this.currentCost = item.currentCost;
+        this.baseCost = item.baseCost;
         this.baseIncome = item.baseIncome;
         this.quantity = item.quantity;
         this.costMultiplier = item.costMultiplier;
@@ -62,6 +71,11 @@ class Item {
     updateCost() {
         this.currentCost *= this.costMultiplier;
         this.currentCost = Math.floor(this.currentCost);
+    }
+
+    changeCostMultiplier(newMultiplier) {
+        this.costMultiplier = newMultiplier;
+        this.currentCost = this.baseCost * Math.pow(this.costMultiplier, this.quantity);
     }
 
     getCost() {

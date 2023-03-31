@@ -1,6 +1,9 @@
 import {Production} from "./production.js";
 import {Upgrades} from "./upgrades.js";
 import {Developments} from "./development.js"
+import {Trivia} from "./trivia.js"
+import {Language} from "./language.js"
+import {Achievements} from "./achievements.js";
 import localforage from "localforage";
 
 export class Game {
@@ -16,33 +19,50 @@ export class Game {
     stage = 0;
     _lastUpdate = 0;
     _lastSaved = 0;
+    startTime = 0;
     totalTicks = 0;
     knowledge = 0;
+    knowledgeMultiplier = 1;
     production = new Production();
     upgrades = [false, false, false, false];
+    achievementsEnabled = false;
+    achievements = [false, false, false, false, false];
     developments = [0, 0, 0];
+    totalClicks = 0;
 
     constructor(game) {
         if (!game) {
             this.money = 0;
             this.incomePerSecond = 0;
-            this.stage = 1;
+            this.stage = 0;
+            this.startTime = new Date().getTime() / 1000;
             return;
         }
 
-        this.money = game.money;
-        this.highestMoney = game.money;
-        this.incomePerSecond = game.incomePerSecond;
-        this.clickMultiplier = game.clickMultiplier;
-        this.stage = game.stage;
-        this.clickIPS = game.clickIPS;
-        this.knowledge = game.knowledge;
-        this.developments = game.developments;
+        this.money = game.money || 0;
+        this.highestMoney = game.highestMoney || 0;
+        this.incomePerSecond = game.incomePerSecond || 0;
+        this.clickMultiplier = game.clickMultiplier || 1;
+        this.stage = game.stage || 0;
+        this.clickIPS = game.clickIPS || 0;
+        this.knowledge = game.knowledge || 0;
+        this.developments = game.developments || [0, 0, 0];
+        this.upgrades = game.upgrades || [false, false, false, false];
+        this.achievementsEnabled = game.achievementsEnabled || false;
+        this.achievements = game.achievements || [false, false, false, false, false];
+        this.totalClicks = game.totalClicks || 0;
+        this.mathPlayed = game.mathPlayed || 0;
+        this.mathWin = game.mathWin || 0;
+        this.triviaPlayed = game.triviaPlayed || 0;
+        this.triviaWin = game.triviaWin || 0;
+        this.languagePlayed = game.languagePlayed || 0;
+        this.languageWin = game.languageWin || 0;
+        this.knowledgeMultiplier = game.knowledgeMultiplier || 1;
+        this.startTime = game.startTime || new Date().getTime() / 1000;
         this._lastUpdate = new Date().getTime() / 1000;
         this._lastSaved = new Date().getTime() / 1000;
         this._tickInterval = setInterval(() => this.update(), this.TICK_DURATION * 1000);
         this.production = new Production(game.production);
-        this.upgrades = game.upgrades;
     }
 
     start() {
@@ -54,6 +74,7 @@ export class Game {
 
     nextStage() {
         this.stage++;
+        if (this.stage == 5) this.achievementsEnabled = true;
     }
 
     update() {
@@ -61,8 +82,17 @@ export class Game {
         let timeDiff = Math.max(0, now - this._lastUpdate);
         this.money += timeDiff * this.incomePerSecond;
         this.highestMoney = Math.max(this.money, this.highestMoney);
-        this._lastUpdate = now;
 
+        for (var i = 0; i < this.achievements.length; i++) {
+            if (this.achievements[i] || !this.achievementsEnabled) continue;
+            if (Achievements.checkCondition(i)(this) == true) {
+                console.log(i);
+                this.achievements[i] = true;
+                Achievements.getEffect(i)(this);
+            }
+        }
+
+        this._lastUpdate = now;
         let saveDiff = Math.max(0, now - this._lastSaved);
         if (saveDiff > 10) {
             console.log("saved");
@@ -73,6 +103,7 @@ export class Game {
 
     clickMoney() {
         this.money += (1 + this.incomePerSecond * this.clickIPS) * this.clickMultiplier;
+        this.totalClicks++;
     }
 
     getCost(i) {
@@ -85,6 +116,14 @@ export class Game {
 
     getDevelopmentCost(i) {
         return Developments.getCost(i, this.developments[i]);
+    }
+
+    getRandomQuestion() {
+        return Trivia.getRandomQuestion();
+    }
+
+    getRandomTranslation() {
+        return Language.getRandomTranslation();
     }
 
     getBaseIncome(i) {
@@ -103,6 +142,10 @@ export class Game {
             this.incomePerSecond = this.production.calculateIncome();
             this.money -= cost;
         }
+    }
+
+    resetGame() {
+        localforage.setItem('savedgame', new Game());
     }
 
     buyUpgrade(i) {

@@ -20,13 +20,13 @@ class Development {
 export class Developments {
     static developmentList = [
         new Development((quantity) => quantity + 1, (game) => {
-            game.production.globalMultiplier *= 1.1;
+            game.production.globalMultiplier *= 1.5;
         }), 
         new Development((quantity) => quantity + 1, (game) => {
-            game.production.productionList[1].incomeMultiplier *= 2;
+            game.clickMultiplier *= 1.5;
         }),
         new Development((quantity) => quantity + 1, (game) => {
-            game.production.productionList[2].incomeMultiplier *= 2;
+            game.production.costMultiplier *= 0.8;
         }),
     ];
 

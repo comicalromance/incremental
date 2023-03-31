@@ -8,14 +8,15 @@
 
 <style scoped>
 .modal{
-    width: 300px;
-    height: 100px;
+    width: 800px;
     border-radius: 10px;
     background-color: white;
     padding: 20px 20px;
     z-index: 1200;
     text-align: center;
 }
+
+
 .modal_wrapper {
     background-color: rgba(0,0,0,0.6);
     width: 100vw;

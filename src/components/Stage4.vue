@@ -10,14 +10,13 @@ import UpgradeList from "./UpgradeList.vue";
         <div id="left">
             <div id="head">
                 <div class="progress">
-                    <el-progress :text-inside="true" :stroke-width="30" :percentage="game.highestMoney/10000000 * 100" status="success">
-                        <span style="color:black">Goal: $10,000,000</span>
+                    <el-progress :text-inside="true" :stroke-width="30" :percentage="game.highestMoney/1000000 * 100" status="success">
+                        <span style="color:black">Goal: $1,000,000</span>
                     </el-progress>
                 </div>
                 <p class="header">
-                    <h3>Money</h3>
                     <h1>${{ Math.floor(game.money) }}</h1>
-                    <h4>Income: ${{ game.incomePerSecond }}/s</h4>
+                    <h4>Income: ${{ parseFloat(game.incomePerSecond.toFixed(1)) }}/s</h4>
                 </p>
                 <div class="click" @click="game.clickMoney()">
                     WORK
@@ -41,12 +40,26 @@ import UpgradeList from "./UpgradeList.vue";
             </el-tabs>
         </div>
     </div>
-    <Modal v-if="game.money >= 10000000">
-            <p>
-                Hello world!
+    <Modal v-if="game.money >= 1000000">
+        <h1>The Quantifed Self</h1>
+            <br/>
+            <p class="justify">
+                It must be admitted that a fundamental difference exists between the game and gamified: the game presents only a virtual, artificial
+                self, while the gamified leverages technology to connect the body and develop self-knowledge. To bridge the gap into the gamified,
+                the self must be involved by tracking the body, from health information to consumption patterns, or even personal input and stakes.
+                <br/>
+                <br/>
+                With enough data points, the quantified self is then manifested, a highly precise and automated reflection of the individual. This self
+                thus becomes the subject of self-governance and self-improvement, driven by feedback mechanisms that encourage more engagement.
+                <br/>
+                <br/>
+                Yet, every data point that comprises the quantified self exists as a piece of information for corporations to capture. Every
+                quiz you submit or run you complete are bits and bytes that feed straight into corporate databases. Gamification
+                empowers the process of surveillance and datafication, enabling corporations to better understand behavioural patterns and churn more
+                effective and manipulative algorithms of control. 
             </p>
             <div class="click" @click="game.nextStage()">
-                CLICK
+                Proceed
             </div>
     </Modal>
 </template>
@@ -57,10 +70,20 @@ import UpgradeList from "./UpgradeList.vue";
 </style>
 
 <style scoped>
-h1 {
+p h1 {
   font-weight: 500;
   font-size: 3.2rem;
   top: -10px;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.center {
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 h4 {

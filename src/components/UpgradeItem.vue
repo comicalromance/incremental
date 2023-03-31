@@ -1,7 +1,3 @@
-<script setup>
-import EcosystemIcon from "./icons/IconEcosystem.vue"
-</script>
-
 <template>
   <div>
     <el-tooltip placement="top" effect="light">
@@ -13,7 +9,7 @@ import EcosystemIcon from "./icons/IconEcosystem.vue"
             
         </template>
         <el-card class="box-card" shadow="hover">
-            <span class="icon"><slot name="icon"><EcosystemIcon></EcosystemIcon></slot></span>
+            <span class="icon"><slot name="icon"></slot></span>
         </el-card>
     </el-tooltip>
   </div>
