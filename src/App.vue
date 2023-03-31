@@ -2,6 +2,7 @@
 import Stage1 from './components/Stage1.vue'
 import Stage2 from './components/Stage2.vue'
 import Stage3 from './components/Stage3.vue'
+import Stage4 from './components/Stage4.vue'
 </script>
 
 <template>
@@ -13,6 +14,7 @@ import Stage3 from './components/Stage3.vue'
       <Stage1 v-if="game.stage == 1"/>
       <Stage2 v-if="game.stage == 2"/>
       <Stage3 v-if="game.stage == 3"/>
+      <Stage4 v-if="game.stage == 4"/>
     </div>
   </main>
 </template>

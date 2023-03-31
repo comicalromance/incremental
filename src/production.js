@@ -1,4 +1,5 @@
 export class Production {
+    globalMultiplier = 1;
     productionList = [];
 
     constructor(production) {
@@ -11,6 +12,7 @@ export class Production {
         production.productionList.forEach((item) => {
             this.productionList.push(new Item(0, 0, item))
         });
+        this.globalMultiplier = production.globalMultiplier;
     }
 
     getCost(i) {
@@ -18,7 +20,7 @@ export class Production {
     }
 
     getBaseIncome(i) {
-        return this.productionList[i].getBaseIncome();
+        return this.productionList[i].getBaseIncome() * this.globalMultiplier;
     }
 
     buyItem(i) {
@@ -33,7 +35,7 @@ export class Production {
     calculateIncome() {
         let sum = 0;
         this.productionList.forEach((item) => sum += item.getIncome());
-        return sum;
+        return sum * this.globalMultiplier;
     }
 }
 
@@ -67,7 +69,7 @@ class Item {
     }
 
     getBaseIncome() {
-        return this.baseIncome;
+        return this.baseIncome * this.incomeMultiplier;
     }
 
     getIncome() {

@@ -1,6 +1,7 @@
 <script setup>
 import Modal from "./Modal.vue"
 import ProductionList from "./ProductionList.vue";
+import KnowledgeList from "./KnowledgeList.vue";
 import UpgradeList from "./UpgradeList.vue";
 </script>
 
@@ -9,11 +10,12 @@ import UpgradeList from "./UpgradeList.vue";
         <div id="left">
             <div id="head">
                 <div class="progress">
-                    <el-progress :text-inside="true" :stroke-width="30" :percentage="game.highestMoney/100000 * 100" status="success">
-                        <span style="color:black">Goal: $100,000</span>
+                    <el-progress :text-inside="true" :stroke-width="30" :percentage="game.highestMoney/10000000 * 100" status="success">
+                        <span style="color:black">Goal: $10,000,000</span>
                     </el-progress>
                 </div>
                 <p class="header">
+                    <h3>Money</h3>
                     <h1>${{ Math.floor(game.money) }}</h1>
                     <h4>Income: ${{ game.incomePerSecond }}/s</h4>
                 </p>
@@ -28,11 +30,18 @@ import UpgradeList from "./UpgradeList.vue";
             </div>
         </div>
         <div id="right">
-            <ProductionList></ProductionList>
-            <UpgradeList></UpgradeList>
+            <el-tabs class="tabs">
+                <el-tab-pane label="Production">
+                    <ProductionList></ProductionList>
+                    <UpgradeList></UpgradeList>
+                </el-tab-pane>
+                <el-tab-pane label="Knowledge">
+                    <KnowledgeList></KnowledgeList>
+                </el-tab-pane>
+            </el-tabs>
         </div>
     </div>
-    <Modal v-if="game.money >= 100000">
+    <Modal v-if="game.money >= 10000000">
             <p>
                 Hello world!
             </p>
@@ -42,13 +51,17 @@ import UpgradeList from "./UpgradeList.vue";
     </Modal>
 </template>
 
+<style>
+
+
+</style>
+
 <style scoped>
 h1 {
   font-weight: 500;
   font-size: 3.2rem;
   top: -10px;
 }
-
 
 h4 {
     font-size: 1.2rem;
@@ -62,7 +75,8 @@ h4 {
     color: darkslategrey;
 }
 .main h1,
-.main h3 {
+.main h3, 
+#head {
   text-align: center;
 }
 
@@ -83,10 +97,6 @@ h4 {
     margin-bottom: 1rem;
 }
 
-#head {
-    text-align: center;
-}
-
 </style>
 
 <script>
@@ -94,9 +104,8 @@ export default {
     data() {
         return {
             game: game,
+            tab: "first"
         }
     }, 
-    watch: {
-    }
 }
 </script>

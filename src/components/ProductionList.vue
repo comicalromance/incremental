@@ -60,7 +60,10 @@ export default {
             game: game,
         }
     }, 
-    watch: {
+    methods: {
+        isEnabled(i) {
+            return game.money >= game.getCost(0);
+        }
     }
 }
 </script>

@@ -8,10 +8,11 @@ import ProductionList from "./ProductionList.vue"
         <div id="left">
             <div id="head">
                 <div class="progress">
-                    <h3>Goal: $5000</h3>
+                    <el-progress :text-inside="true" :stroke-width="30" :percentage="game.highestMoney/5000 * 100" status="success">
+                        <span style="color:black">Goal: $5000</span>
+                    </el-progress>
                 </div>
                 <p class="header">
-                    <h3>Money</h3>
                     <h1>${{ Math.floor(game.money) }}</h1>
                     <h4>Income: ${{ game.incomePerSecond }}/s</h4>
                 </p>
@@ -79,7 +80,10 @@ h4 {
 }
 
 .progress {
-    line-height: 3rem;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
 }
 
 #head {

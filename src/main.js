@@ -1,10 +1,17 @@
 import localforage from 'localforage'
-import { createApp, ref } from 'vue'
+import ElementPlus from 'element-plus'
+import { createApp} from 'vue'
 import App from './App.vue'
 
+import 'element-plus/dist/index.css'
 import './assets/main.css'
 import {Game} from './game.js'
 
+function startApp() {
+    const app = createApp(App);
+    app.use(ElementPlus);
+    app.mount("#app");
+}
 
 localforage.getItem('savedgame').then((savedgame) => {
     if (savedgame != null) {
@@ -13,12 +20,13 @@ localforage.getItem('savedgame').then((savedgame) => {
     } else {
         window.game = new Game().start();
     }
-    createApp(App).mount('#app');
+    startApp();
 }).catch((err) => {
     console.log(err);
     window.game = new Game().start();
-    createApp(App).mount('#app');
+    startApp();
 })
+
 
 
 //window.game = new Game().start();

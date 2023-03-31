@@ -23,7 +23,7 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    margin-top: 10rem;
+    padding-top: 8rem;
     place-items: center;
   }
 
@@ -42,4 +42,12 @@ a,
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.el-tabs__nav {
+  padding-left: 1rem !important;
+}
+
+.el-popper {
+  width: 15rem !important;
 }
